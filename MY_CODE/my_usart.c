@@ -3,18 +3,17 @@
 /******************************************************************************************
 *                        @宏定义
 ******************************************************************************************/
+#define USART2_DMA_RX_BUFFER_MAX_LENGTH		(255)
+#define USART2_DMA_TX_BUFFER_MAX_LENGTH		(255)
 
+uint8_t USART2_DMA_RX_Buffer[USART2_DMA_RX_BUFFER_MAX_LENGTH];
+uint8_t USART2_DMA_TX_Buffer[USART2_DMA_TX_BUFFER_MAX_LENGTH];
 /******************************************************************************************
 *                        @数据
 ******************************************************************************************/
 
 // typedef struct usart_data {
 // 	USART_TypeDef*	USARTx;
-
-// 	GPIO_TypeDef* 	TX_GPIOx;
-// 	uint16_t		TX_GPIO_Pin;
-// 	GPIO_TypeDef* 	RX_GPIOx;
-// 	uint16_t		RX_GPIO_Pin;
 
 // 	uint32_t		usart_bound;
 // 	uint8_t			PreemptionPriority;
@@ -62,8 +61,8 @@ void __usart_configuration(uint32_t usart_bound)
 	
   	USART_Cmd(USART2, ENABLE);  													//使能串口2
 
-	USART_ITConfig(USART2, USART_IT_RXNE, ENABLE);									//开启相关中断
-
+	USART_ITConfig(USART2, USART_IT_RXNE, ENABLE);									//开启接收中断
+	
 	//USART2 NVIC 配置
   	NVIC_InitStructure.NVIC_IRQChannel = USART2_IRQn;								//串口2中断通道
 	NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority=3;							//抢占优先级3
@@ -72,6 +71,39 @@ void __usart_configuration(uint32_t usart_bound)
 	NVIC_Init(&NVIC_InitStructure);													//根据指定的参数初始化NVIC寄存器
 }
 
+void __usart_dma_tx_configuration(void)
+{
+	DMA_InitTypeDef  DMA_InitStructure	= {0};
+ 
+	RCC_AHB1PeriphClockCmd(RCC_AHB1Periph_DMA1 , ENABLE);					//DMA1时钟使能
+	DMA_DeInit(DMA1_Stream6);
+	while (DMA_GetCmdStatus(DMA1_Stream6) != DISABLE);						//等待DMA可配置
+	DMA_InitStructure.DMA_Channel = DMA_Channel_4; 							//DMA通道配置
+	DMA_InitStructure.DMA_PeripheralBaseAddr = (uint32_t)&USART2->DR;		//DMA外设地址
+	DMA_InitStructure.DMA_Memory0BaseAddr = (uint32_t)USART2_DMA_TX_Buffer;	//发送缓存指针
+	DMA_InitStructure.DMA_DIR = DMA_DIR_MemoryToPeripheral;					//DMA传输方向：内存--->外设
+	DMA_InitStructure.DMA_BufferSize = USART2_DMA_TX_BUFFER_MAX_LENGTH;		//数据传输字节数量
+	DMA_InitStructure.DMA_PeripheralInc = DMA_PeripheralInc_Disable;		//外设非增量模式
+	DMA_InitStructure.DMA_MemoryInc = DMA_MemoryInc_Enable;					//存储器增量模式
+	DMA_InitStructure.DMA_PeripheralDataSize = DMA_PeripheralDataSize_Byte;	//外设数据长度:8位
+	DMA_InitStructure.DMA_MemoryDataSize = DMA_MemoryDataSize_Byte;			//存储器数据长度:8位	
+	DMA_InitStructure.DMA_Mode = DMA_Mode_Normal;							//使用普通模式 
+	DMA_InitStructure.DMA_Priority = DMA_Priority_Medium;					//中等优先级 DMA_Priority_High
+	DMA_InitStructure.DMA_FIFOMode = DMA_FIFOMode_Disable;         
+	DMA_InitStructure.DMA_FIFOThreshold = DMA_FIFOThreshold_Full;
+	DMA_InitStructure.DMA_MemoryBurst = DMA_MemoryBurst_Single;				//存储器突发单次传输
+	DMA_InitStructure.DMA_PeripheralBurst = DMA_PeripheralBurst_Single;		//外设突发单次传输
+
+	DMA_Init(DMA1_Stream6, &DMA_InitStructure);								//初始化DMA Stream
+	USART_DMACmd(USART2 ,   USART_DMAReq_Tx,ENABLE);  						//使能串口的DMA发送
+	DMA_Cmd(DMA1_Stream6, DISABLE); 										//开启DMA传输
+}
+
+void __usart_init(void)
+{
+	__usart_configuration(115200);
+	__usart_dma_tx_configuration();
+}
 
 // 发送单个字节
 void __usart2_send_byte(uint8_t Byte)
@@ -88,6 +120,18 @@ void __usart2_send_array(uint8_t *Arr, uint8_t Length)
     {
         __usart2_send_byte(Arr[i]);
     }
+}
+
+void __usart_dma_begin_send(uint8_t *send_buffer , uint16_t nSendCount)
+{
+	if (nSendCount < USART2_DMA_TX_BUFFER_MAX_LENGTH)
+	{
+		memcpy(USART2_DMA_TX_Buffer , send_buffer , nSendCount);
+		DMA_Cmd(DMA1_Stream6 , DISABLE);                    //关闭DMA传输
+		while (DMA_GetCmdStatus(DMA1_Stream6) != DISABLE);	//确保DMA可以被设置
+		DMA_SetCurrDataCounter(DMA1_Stream6 , nSendCount);  //数据传输量
+		DMA_Cmd(DMA1_Stream6 , ENABLE);               		//开启DMA传输
+	}
 }
 
 /******************************************************************************************
