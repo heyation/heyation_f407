@@ -8,6 +8,7 @@
 typedef struct led_data {
     GPIO_TypeDef* GPIOx;
     uint16_t      GPIO_Pin;
+    
     BitAction     state;
 
     void          (*init)(struct led_data* self);

@@ -5,8 +5,12 @@
 ******************************************************************************************/
 void all_init(void)
 {
+	NVIC_PriorityGroupConfig(NVIC_PriorityGroup_4);
+
 	delay_init(168);
+
 	led_init();
+
 	__usart_configuration(115200);
 }
 
@@ -19,6 +23,6 @@ int main(void)
 	{
 		__usart2_send_array("111",3);
 		led1.toggle(&led1);
-		delay_ms(500);
+		delay_ms(5000);
 	}
 }
