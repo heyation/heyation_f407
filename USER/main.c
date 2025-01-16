@@ -23,7 +23,7 @@ int main(void)
   // 获取字符串长度（包括终止符 '\0'）
   uint16_t data_length = strlen(data_to_send); 
 	
-		char data_to_send1[] = "111";
+		char data_to_send1[] = "1111";
   // 获取字符串长度（包括终止符 '\0'）
   uint16_t data_length1 = strlen(data_to_send); 
 	
@@ -31,17 +31,20 @@ int main(void)
 	{
 		//__usart2_send_array("111",3);
 		
-    __usart_dma_begin_send((uint8_t *)data_to_send, data_length);
+    	__usart_dma_send_data((uint8_t *)data_to_send, data_length);
 		//led1.toggle(&led1);
 		led2.toggle(&led2);
-		delay_ms(5000);
-		__usart_dma_begin_send((uint8_t *)data_to_send1, data_length1);
+		DMA_ClearFlag(DMA1_Stream6, DMA_FLAG_TCIF6);  // 清除 DMA 完成标志
+		delay_ms(1000);
+		__usart_dma_send_data((uint8_t *)data_to_send1, data_length1);
 		//led1.toggle(&led1);
 		led2.toggle(&led2);
-		delay_ms(5000);
-		__usart_dma_begin_send((uint8_t *)data_to_send, data_length);
+		DMA_ClearFlag(DMA1_Stream6, DMA_FLAG_TCIF6);  // 清除 DMA 完成标志
+		delay_ms(1000);
+		__usart_dma_send_data((uint8_t *)data_to_send, data_length);
 		//led1.toggle(&led1);
 		led2.toggle(&led2);
-		delay_ms(5000);
+		DMA_ClearFlag(DMA1_Stream6, DMA_FLAG_TCIF6);  // 清除 DMA 完成标志
+		delay_ms(1000);
 	}
 }

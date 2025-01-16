@@ -95,7 +95,7 @@ void __usart_dma_tx_configuration(void)
 	DMA_InitStructure.DMA_PeripheralBurst = DMA_PeripheralBurst_Single;		//外设突发单次传输
 
 	DMA_Init(DMA1_Stream6, &DMA_InitStructure);								//初始化DMA Stream
-	USART_DMACmd(USART2 ,   USART_DMAReq_Tx,ENABLE);  						//使能串口的DMA发送
+	USART_DMACmd(USART2 , USART_DMAReq_Tx,ENABLE);  						//使能串口的DMA发送
 	DMA_Cmd(DMA1_Stream6, DISABLE); 										//开启DMA传输
 }
 
@@ -108,8 +108,8 @@ void __usart_init(void)
 // 发送单个字节
 void __usart2_send_byte(uint8_t Byte)
 {
-	USART_SendData(USART2, Byte);													//向串口2发送数据
-	while(USART_GetFlagStatus(USART2,USART_FLAG_TC)!=SET);							//等待发送结束
+	USART_SendData(USART2, Byte);											//向串口2发送数据
+	while(USART_GetFlagStatus(USART2,USART_FLAG_TC)!=SET);					//等待发送结束
 }
 
 // 发送数组
@@ -122,14 +122,16 @@ void __usart2_send_array(uint8_t *Arr, uint8_t Length)
     }
 }
 
-void __usart_dma_begin_send(uint8_t *send_buffer , uint16_t nSendCount)
+void __usart_dma_send_data(uint8_t *send_buffer , uint16_t nSendCount)
 {
 	if (nSendCount < USART2_DMA_TX_BUFFER_MAX_LENGTH)
 	{
 		memcpy(USART2_DMA_TX_Buffer , send_buffer , nSendCount);
+		USART_DMACmd(USART2 , USART_DMAReq_Tx,ENABLE);  	//使能串口的DMA发送
 		DMA_Cmd(DMA1_Stream6 , DISABLE);                    //关闭DMA传输
 		while (DMA_GetCmdStatus(DMA1_Stream6) != DISABLE);	//确保DMA可以被设置
 		DMA_SetCurrDataCounter(DMA1_Stream6 , nSendCount);  //数据传输量
+		DMA1_Stream6->M0AR = (uint32_t)send_buffer; 		//确保内存地址更新
 		DMA_Cmd(DMA1_Stream6 , ENABLE);               		//开启DMA传输
 	}
 }

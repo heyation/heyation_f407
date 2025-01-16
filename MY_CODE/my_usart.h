@@ -12,7 +12,7 @@ void __usart_init(void);
 	
 void __usart2_send_byte(uint8_t Byte);
 void __usart2_send_array(uint8_t *Arr, uint8_t Length);
-void __usart_dma_begin_send(uint8_t *send_buffer , uint16_t nSendCount);
+void __usart_dma_send_data(uint8_t *send_buffer , uint16_t nSendCount);
 /******************************************************************************************
 *                        @软件抽象层
 ******************************************************************************************/
