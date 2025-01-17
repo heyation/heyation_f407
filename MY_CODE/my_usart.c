@@ -28,7 +28,7 @@ uint8_t USART2_DMA_TX_Buffer[USART2_DMA_TX_BUFFER_MAX_LENGTH];
 /******************************************************************************************
 *                        @硬件实现层
 ******************************************************************************************/
-void __usart_configuration(uint32_t usart_bound)
+void __usart2_configuration(uint32_t usart_bound)
 {
 	//GPIO端口设置
   	GPIO_InitTypeDef 	GPIO_InitStructure		={0};
@@ -71,7 +71,7 @@ void __usart_configuration(uint32_t usart_bound)
 	NVIC_Init(&NVIC_InitStructure);													//根据指定的参数初始化NVIC寄存器
 }
 
-void __usart_dma_tx_configuration(void)
+void __usart2_dma_tx_configuration(void)
 {
 	DMA_InitTypeDef  DMA_InitStructure	= {0};
  
@@ -108,10 +108,10 @@ void __usart_dma_tx_configuration(void)
     NVIC_Init(&NVIC_InitStructure);
 }
 
-void __usart_init(void)
+void __usart2_init(void)
 {
-	__usart_configuration(115200);
-	__usart_dma_tx_configuration();
+	__usart2_configuration(115200);
+	__usart2_dma_tx_configuration();
 }
 
 // 发送单个字节
@@ -131,7 +131,7 @@ void __usart2_send_array(uint8_t *Arr, uint8_t Length)
     }
 }
 
-void __usart_dma_send_data(uint8_t *send_buffer , uint16_t nSendCount)
+void __usart2_dma_send_data(uint8_t *send_buffer , uint16_t nSendCount)
 {
 	if (nSendCount < USART2_DMA_TX_BUFFER_MAX_LENGTH)
 	{
@@ -145,15 +145,26 @@ void __usart_dma_send_data(uint8_t *send_buffer , uint16_t nSendCount)
 	}
 }
 
+void __usart2_dma_send_string(char *data_to_send)
+{
+	if (data_to_send == NULL) {
+        return; // 防止空指针传入
+    }
+    uint16_t nSendCount = strlen(data_to_send); 			// 自动计算字符串长度
+    if (nSendCount > 0) {
+        __usart2_dma_send_data((uint8_t *)data_to_send, nSendCount);
+    }
+}
+
 /******************************************************************************************
 *                        @中断
 ******************************************************************************************/
 void USART2_IRQHandler(void)//串口2中断服务程序
 {
-	if(USART_GetITStatus(USART2, USART_IT_RXNE) == SET)//判断是不是真的有中断发生
+	if(USART_GetITStatus(USART2, USART_IT_RXNE) == SET)
   	{
-    USART_SendData(USART2,USART_ReceiveData(USART2));//又将数据发回去
-    USART_ClearITPendingBit(USART2, USART_IT_RXNE); //已经处理就清楚标志位 
+    USART_SendData(USART2,USART_ReceiveData(USART2));
+    USART_ClearITPendingBit(USART2, USART_IT_RXNE);  
   	}  
 } 
 void DMA1_Stream6_IRQHandler(void) 

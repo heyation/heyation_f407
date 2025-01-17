@@ -11,8 +11,8 @@ void all_init(void)
 
 	led_init();
 
-	__usart_configuration(115200);
-	__usart_dma_tx_configuration();
+	__usart2_init();
+
 }
 
 
@@ -20,28 +20,25 @@ int main(void)
 {
 	all_init();
 	char data_to_send[] = "222";
-  // 获取字符串长度（包括终止符 '\0'）
-  uint16_t data_length = strlen(data_to_send); 
-	
-		char data_to_send1[] = "1111";
-  // 获取字符串长度（包括终止符 '\0'）
-  uint16_t data_length1 = strlen(data_to_send); 
+  	// 获取字符串长度（包括终止符 '\0'）
+
+	char data_to_send1[] = "1111";
+  	// 获取字符串长度（包括终止符 '\0'）
 	
 	while(1)
 	{
 		//__usart2_send_array("111",3);
-		
-    	__usart_dma_send_data((uint8_t *)data_to_send, data_length);
+		__usart2_dma_send_string((uint8_t *)data_to_send);
 		//led1.toggle(&led1);
-		led1.toggle(&led1);
+		led2.toggle(&led2);
 		delay_ms(1000);
-		__usart_dma_send_data((uint8_t *)data_to_send1, data_length1);
+		__usart2_dma_send_string((uint8_t *)data_to_send1);
 		//led1.toggle(&led1);
-		led1.toggle(&led1);
+		led2.toggle(&led2);
 		delay_ms(1000);
-		__usart_dma_send_data((uint8_t *)data_to_send, data_length);
+		__usart2_dma_send_string((uint8_t *)data_to_send);
 		//led1.toggle(&led1);
-		led1.toggle(&led1);
+		led2.toggle(&led2);
 		delay_ms(1000);
 	}
 }
