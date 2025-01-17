@@ -289,22 +289,21 @@ void __usart3_dma_send_string(char *data_to_send)
 /******************************************************************************************
 *                        @USART
 ******************************************************************************************/
-// void __usart_init(usart_data* self)
-// {
-// 	if(self->USARTx == USART2) 		__usart2_init(self->bound);
-// 	else if(self->USARTx == USART3) __usart3_init(self->bound);
-// }
-// void usart_dma_send_data(usart_data* self,char *data_to_send)
-// {
-// 	if(self->USARTx == USART2) 		__usart2_dma_send_string(data_to_send);
-// 	else if(self->USARTx == USART3) __usart3_dma_send_string(data_to_send);
-
-// }
-// void usart_register_functions(usart_data* usart)
-// {
-// 	usart->init = __usart_init;
-// 	usart->tx	= usart_dma_send_data;
-// }
+void __usart_init(usart_data* self)
+{
+	if(self->USARTx == USART2) 		__usart2_init(self->bound);
+	else if(self->USARTx == USART3) __usart3_init(self->bound);
+}
+void usart_dma_send_data(usart_data* self,char *data_to_send)
+{
+	if(self->USARTx == USART2) 		__usart2_dma_send_string(data_to_send);
+	else if(self->USARTx == USART3) __usart3_dma_send_string(data_to_send);
+}
+void usart_register_functions(usart_data* usart)
+{
+	usart->init = __usart_init;
+	usart->tx	= usart_dma_send_data;
+}
 /******************************************************************************************
 *                        @中断
 ******************************************************************************************/

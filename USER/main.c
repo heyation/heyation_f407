@@ -5,14 +5,19 @@
 ******************************************************************************************/
 void all_init(void)
 {
+	
 	NVIC_PriorityGroupConfig(NVIC_PriorityGroup_4);
 
 	delay_init(168);
 
 	led_init();
-	// usart_init();
 	__usart2_init(115200);
-	__usart3_init(115200);
+	led1.toggle(&led1);
+	led2.toggle(&led2);
+	usart_init();
+	led1.toggle(&led1);
+	led2.toggle(&led2);
+
 
 }
 
@@ -34,20 +39,20 @@ int main(void)
 	
 	while(1)
 	{
-		//__usart2_send_array("111",3);
-		// usart2.tx(&usart2,data_to_send);
-		__usart2_dma_send_string(data_to_send);
-		// __usart3_send_array("222",3);
-		 __usart3_dma_send_string(data_to_send);
-		//led1.toggle(&led1);
-		led2.toggle(&led2);
+
+		usart2.tx(&usart2,data_to_send);
+		usart3.tx(&usart3,data_to_send);
+
+		led1.toggle(&led1);
+		//led2.toggle(&led2);
 		delay_ms(1000);
-		// usart2.tx(&usart2,data_to_send1);
-		__usart2_dma_send_string(data_to_send1);
-		//__usart3_send_array("1111",4);
-		__usart3_dma_send_string(data_to_send1);
-		//led1.toggle(&led1);
-		led2.toggle(&led2);
+
+		
+		usart2.tx(&usart2,data_to_send1);
+		usart3.tx(&usart3,data_to_send1);
+
+		led1.toggle(&led1);
+		//led2.toggle(&led2);
 		delay_ms(1000);
 	}
 }

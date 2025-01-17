@@ -30,21 +30,21 @@ void led_init(void)
 /******************************************************************************************
 *                        @USART
 ******************************************************************************************/  
-// usart_data usart2 = {
-// 	.USARTx = USART2,
-// 	.bound	= 115200,
-// };
+usart_data usart2 = {
+	.USARTx = USART2,
+	.bound	= 115200,
+};
 
-// usart_data usart3 = {
-// 	.USARTx = USART3,
-// 	.bound	= 115200,
-// };
-// void usart_init(void)
-// {
-// 	usart_register_functions(&usart2);
-// 	usart3.init(&usart2);
-// 	usart_register_functions(&usart3);
-// 	usart3.init(&usart3);
-// }
+usart_data usart3 = {
+	.USARTx = USART3,
+	.bound	= 115200,
+};
+void usart_init(void)
+{
+	usart_register_functions(&usart2);
+	usart2.init(&usart2);
+	usart_register_functions(&usart3);
+	usart3.init(&usart3);
+}
 
 

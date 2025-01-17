@@ -5,14 +5,14 @@
 /******************************************************************************************
 *                        @
 ******************************************************************************************/
-// typedef struct usart_data {
-// 	USART_TypeDef*	USARTx;
+typedef struct usart_data {
+	USART_TypeDef*	USARTx;
 
-// 	uint32_t		bound;
+	uint32_t		bound;
 
-// 	void			(*init)(struct usart_data* self);
-// 	void			(*tx)(struct usart_data* self,char *data_to_send);
-// }usart_data;
+	void			(*init)(struct usart_data* self);
+	void			(*tx)(struct usart_data* self,char *data_to_send);
+}usart_data;
 
 // USART2
 void __usart2_configuration(uint32_t usart_bound);
@@ -36,9 +36,9 @@ void __usart3_dma_send_data(uint8_t *send_buffer , uint16_t nSendCount);
 void __usart3_dma_send_string(char *data_to_send);
 
 // USART
-// void __usart_init(usart_data* self);
-// void usart_dma_send_data(usart_data* self,char *data_to_send);
-// void usart_register_functions(usart_data* usart);
+void __usart_init(usart_data* self);
+void usart_dma_send_data(usart_data* self,char *data_to_send);
+void usart_register_functions(usart_data* usart);
 /******************************************************************************************
 *                        @
 ******************************************************************************************/

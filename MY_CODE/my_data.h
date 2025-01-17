@@ -11,9 +11,9 @@ void led_init(void);
 /******************************************************************************************
 *                        @USART
 ******************************************************************************************/  
-// extern usart_data usart2;
-// extern usart_data usart3;
-// void usart_init(void);
+extern usart_data usart2;
+extern usart_data usart3;
+void usart_init(void);
 
 #endif /* __MY_LED_H_ */
 

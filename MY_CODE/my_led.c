@@ -56,9 +56,9 @@ void __led_toggle(led_data* self)
 // 初始化函数指针
 void led_register_functions(led_data* led) 
 {
-    led->init = __led_init;
-    led->on = __led_turn_on;
-    led->off = __led_turn_off;
+    led->init   = __led_init;
+    led->on     = __led_turn_on;
+    led->off    = __led_turn_off;
     led->toggle = __led_toggle;
 }
 /******************************************************************************************

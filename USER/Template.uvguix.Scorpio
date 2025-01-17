@@ -83,8 +83,8 @@
       <flags>2</flags>
       <showCmd>3</showCmd>
       <MinPosition>
-        <xPos>-1</xPos>
-        <yPos>-1</yPos>
+        <xPos>-32000</xPos>
+        <yPos>-32000</yPos>
       </MinPosition>
       <MaxPosition>
         <xPos>-1</xPos>
@@ -1833,9 +1833,9 @@
       </Doc>
       <Doc>
         <Name>.\main.c</Name>
-        <ColumnNumber>4</ColumnNumber>
-        <TopLine>26</TopLine>
-        <CurrentLine>49</CurrentLine>
+        <ColumnNumber>0</ColumnNumber>
+        <TopLine>5</TopLine>
+        <CurrentLine>20</CurrentLine>
         <Folding>1</Folding>
         <ContractedFolders></ContractedFolders>
         <PaneID>0</PaneID>
@@ -1879,7 +1879,7 @@
       <Doc>
         <Name>..\MY_CODE\my_led.c</Name>
         <ColumnNumber>23</ColumnNumber>
-        <TopLine>38</TopLine>
+        <TopLine>51</TopLine>
         <CurrentLine>74</CurrentLine>
         <Folding>1</Folding>
         <ContractedFolders></ContractedFolders>
@@ -1887,9 +1887,9 @@
       </Doc>
       <Doc>
         <Name>..\MY_CODE\my_data.c</Name>
-        <ColumnNumber>20</ColumnNumber>
-        <TopLine>23</TopLine>
-        <CurrentLine>40</CurrentLine>
+        <ColumnNumber>1</ColumnNumber>
+        <TopLine>20</TopLine>
+        <CurrentLine>43</CurrentLine>
         <Folding>1</Folding>
         <ContractedFolders></ContractedFolders>
         <PaneID>0</PaneID>
@@ -1905,9 +1905,9 @@
       </Doc>
       <Doc>
         <Name>..\MY_CODE\my_data.h</Name>
-        <ColumnNumber>0</ColumnNumber>
+        <ColumnNumber>56</ColumnNumber>
         <TopLine>1</TopLine>
-        <CurrentLine>6</CurrentLine>
+        <CurrentLine>13</CurrentLine>
         <Folding>1</Folding>
         <ContractedFolders></ContractedFolders>
         <PaneID>0</PaneID>
