@@ -88,7 +88,7 @@ void __usart_dma_tx_configuration(void)
 	DMA_InitStructure.DMA_PeripheralDataSize = DMA_PeripheralDataSize_Byte;	//外设数据长度:8位
 	DMA_InitStructure.DMA_MemoryDataSize = DMA_MemoryDataSize_Byte;			//存储器数据长度:8位	
 	DMA_InitStructure.DMA_Mode = DMA_Mode_Normal;							//使用普通模式 
-	DMA_InitStructure.DMA_Priority = DMA_Priority_Medium;					//中等优先级 DMA_Priority_High
+	DMA_InitStructure.DMA_Priority = DMA_Priority_High;						//高优先级 DMA_Priority_High
 	DMA_InitStructure.DMA_FIFOMode = DMA_FIFOMode_Disable;         
 	DMA_InitStructure.DMA_FIFOThreshold = DMA_FIFOThreshold_Full;
 	DMA_InitStructure.DMA_MemoryBurst = DMA_MemoryBurst_Single;				//存储器突发单次传输
@@ -97,6 +97,15 @@ void __usart_dma_tx_configuration(void)
 	DMA_Init(DMA1_Stream6, &DMA_InitStructure);								//初始化DMA Stream
 	USART_DMACmd(USART2 , USART_DMAReq_Tx,ENABLE);  						//使能串口的DMA发送
 	DMA_Cmd(DMA1_Stream6, DISABLE); 										//开启DMA传输
+
+	DMA_ITConfig(DMA1_Stream6, DMA_IT_TC, ENABLE);							// 使能传输完成中断
+
+	NVIC_InitTypeDef NVIC_InitStructure	= {0};
+    NVIC_InitStructure.NVIC_IRQChannel = DMA1_Stream6_IRQn;   // 中断通道
+    NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority = 0; // 抢占优先级
+    NVIC_InitStructure.NVIC_IRQChannelSubPriority = 0;        // 子优先级
+    NVIC_InitStructure.NVIC_IRQChannelCmd = ENABLE;           // 使能
+    NVIC_Init(&NVIC_InitStructure);
 }
 
 void __usart_init(void)
@@ -147,3 +156,11 @@ void USART2_IRQHandler(void)//串口2中断服务程序
     USART_ClearITPendingBit(USART2, USART_IT_RXNE); //已经处理就清楚标志位 
   	}  
 } 
+void DMA1_Stream6_IRQHandler(void) 
+{
+    if (DMA_GetFlagStatus(DMA1_Stream6, DMA_FLAG_TCIF6)) 
+	{
+        DMA_ClearFlag(DMA1_Stream6, DMA_FLAG_TCIF6); // 清除传输完成标志
+    }
+}
+

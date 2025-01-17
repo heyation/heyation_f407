@@ -33,18 +33,15 @@ int main(void)
 		
     	__usart_dma_send_data((uint8_t *)data_to_send, data_length);
 		//led1.toggle(&led1);
-		led2.toggle(&led2);
-		DMA_ClearFlag(DMA1_Stream6, DMA_FLAG_TCIF6);  // 清除 DMA 完成标志
+		led1.toggle(&led1);
 		delay_ms(1000);
 		__usart_dma_send_data((uint8_t *)data_to_send1, data_length1);
 		//led1.toggle(&led1);
-		led2.toggle(&led2);
-		DMA_ClearFlag(DMA1_Stream6, DMA_FLAG_TCIF6);  // 清除 DMA 完成标志
+		led1.toggle(&led1);
 		delay_ms(1000);
 		__usart_dma_send_data((uint8_t *)data_to_send, data_length);
 		//led1.toggle(&led1);
-		led2.toggle(&led2);
-		DMA_ClearFlag(DMA1_Stream6, DMA_FLAG_TCIF6);  // 清除 DMA 完成标志
+		led1.toggle(&led1);
 		delay_ms(1000);
 	}
 }
