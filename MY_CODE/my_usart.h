@@ -3,7 +3,7 @@
 
 #include "ALLHeader.h"
 /******************************************************************************************
-*                        @
+*                        @数据结构
 ******************************************************************************************/
 typedef struct usart_data {
 	USART_TypeDef*	USARTx;
@@ -13,7 +13,9 @@ typedef struct usart_data {
 	void			(*init)(struct usart_data* self);
 	void			(*tx)(struct usart_data* self,char *data_to_send);
 }usart_data;
-
+/******************************************************************************************
+*                        @函数
+******************************************************************************************/
 // USART2
 void __usart2_configuration(uint32_t usart_bound);
 void __usart2_dma_tx_configuration(void);
@@ -39,9 +41,6 @@ void __usart3_dma_send_string(char *data_to_send);
 void __usart_init(usart_data* self);
 void usart_dma_send_data(usart_data* self,char *data_to_send);
 void usart_register_functions(usart_data* usart);
-/******************************************************************************************
-*                        @
-******************************************************************************************/
 
 
 
