@@ -648,6 +648,26 @@
               <FileType>5</FileType>
               <FilePath>..\MY_CODE\my_data.h</FilePath>
             </File>
+            <File>
+              <FileName>my_servos.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\MY_CODE\my_servos.c</FilePath>
+            </File>
+            <File>
+              <FileName>my_servos.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\MY_CODE\my_servos.h</FilePath>
+            </File>
+            <File>
+              <FileName>my_timer.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\MY_CODE\my_timer.c</FilePath>
+            </File>
+            <File>
+              <FileName>my_timer.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\MY_CODE\my_timer.h</FilePath>
+            </File>
           </Files>
         </Group>
       </Groups>
