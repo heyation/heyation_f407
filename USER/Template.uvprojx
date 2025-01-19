@@ -336,7 +336,7 @@
               <MiscControls></MiscControls>
               <Define>STM32F40_41xxx,USE_STDPERIPH_DRIVER</Define>
               <Undefine></Undefine>
-              <IncludePath>..\CORE;..\SYSTEM\delay;..\SYSTEM\sys;..\SYSTEM\usart;..\USER;..\FWLIB\inc;..\MY_CODE</IncludePath>
+              <IncludePath>..\CORE;..\SYSTEM\delay;..\SYSTEM\sys;..\SYSTEM\usart;..\USER;..\FWLIB\inc;..\MY_CODE;..\OTHER_CODE</IncludePath>
             </VariousControls>
           </Cads>
           <Aads>
@@ -667,6 +667,16 @@
               <FileName>my_timer.h</FileName>
               <FileType>5</FileType>
               <FilePath>..\MY_CODE\my_timer.h</FilePath>
+            </File>
+            <File>
+              <FileName>my_key.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\MY_CODE\my_key.c</FilePath>
+            </File>
+            <File>
+              <FileName>my_key.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\MY_CODE\my_key.h</FilePath>
             </File>
           </Files>
         </Group>
